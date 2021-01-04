@@ -13,50 +13,6 @@ import (
 	"github.com/seanrmurphy/lambda-swagger-test/models"
 )
 
-// GetBodyParamErrorResponseOKCode is the HTTP code returned for type GetBodyParamErrorResponseOK
-const GetBodyParamErrorResponseOKCode int = 200
-
-/*GetBodyParamErrorResponseOK Successful execution of API call
-
-swagger:response getBodyParamErrorResponseOK
-*/
-type GetBodyParamErrorResponseOK struct {
-
-	/*
-	  In: Body
-	*/
-	Payload *models.SimpleMessageResponse `json:"body,omitempty"`
-}
-
-// NewGetBodyParamErrorResponseOK creates GetBodyParamErrorResponseOK with default headers values
-func NewGetBodyParamErrorResponseOK() *GetBodyParamErrorResponseOK {
-
-	return &GetBodyParamErrorResponseOK{}
-}
-
-// WithPayload adds the payload to the get body param error response o k response
-func (o *GetBodyParamErrorResponseOK) WithPayload(payload *models.SimpleMessageResponse) *GetBodyParamErrorResponseOK {
-	o.Payload = payload
-	return o
-}
-
-// SetPayload sets the payload to the get body param error response o k response
-func (o *GetBodyParamErrorResponseOK) SetPayload(payload *models.SimpleMessageResponse) {
-	o.Payload = payload
-}
-
-// WriteResponse to the client
-func (o *GetBodyParamErrorResponseOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
-	rw.WriteHeader(200)
-	if o.Payload != nil {
-		payload := o.Payload
-		if err := producer.Produce(rw, payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
-	}
-}
-
 // GetBodyParamErrorResponseInternalServerErrorCode is the HTTP code returned for type GetBodyParamErrorResponseInternalServerError
 const GetBodyParamErrorResponseInternalServerErrorCode int = 500
 
@@ -79,4 +35,48 @@ func (o *GetBodyParamErrorResponseInternalServerError) WriteResponse(rw http.Res
 	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
 
 	rw.WriteHeader(500)
+}
+
+// GetBodyParamErrorResponseNotImplementedCode is the HTTP code returned for type GetBodyParamErrorResponseNotImplemented
+const GetBodyParamErrorResponseNotImplementedCode int = 501
+
+/*GetBodyParamErrorResponseNotImplemented API call runs, but there is no implementation
+
+swagger:response getBodyParamErrorResponseNotImplemented
+*/
+type GetBodyParamErrorResponseNotImplemented struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.ErrorResponse `json:"body,omitempty"`
+}
+
+// NewGetBodyParamErrorResponseNotImplemented creates GetBodyParamErrorResponseNotImplemented with default headers values
+func NewGetBodyParamErrorResponseNotImplemented() *GetBodyParamErrorResponseNotImplemented {
+
+	return &GetBodyParamErrorResponseNotImplemented{}
+}
+
+// WithPayload adds the payload to the get body param error response not implemented response
+func (o *GetBodyParamErrorResponseNotImplemented) WithPayload(payload *models.ErrorResponse) *GetBodyParamErrorResponseNotImplemented {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get body param error response not implemented response
+func (o *GetBodyParamErrorResponseNotImplemented) SetPayload(payload *models.ErrorResponse) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *GetBodyParamErrorResponseNotImplemented) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(501)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

@@ -13,50 +13,6 @@ import (
 	"github.com/seanrmurphy/lambda-swagger-test/models"
 )
 
-// GetBodyParamSimpleResponseOKCode is the HTTP code returned for type GetBodyParamSimpleResponseOK
-const GetBodyParamSimpleResponseOKCode int = 200
-
-/*GetBodyParamSimpleResponseOK Successful execution of API call returning message in simple JSON object
-
-swagger:response getBodyParamSimpleResponseOK
-*/
-type GetBodyParamSimpleResponseOK struct {
-
-	/*
-	  In: Body
-	*/
-	Payload *models.SimpleMessageResponse `json:"body,omitempty"`
-}
-
-// NewGetBodyParamSimpleResponseOK creates GetBodyParamSimpleResponseOK with default headers values
-func NewGetBodyParamSimpleResponseOK() *GetBodyParamSimpleResponseOK {
-
-	return &GetBodyParamSimpleResponseOK{}
-}
-
-// WithPayload adds the payload to the get body param simple response o k response
-func (o *GetBodyParamSimpleResponseOK) WithPayload(payload *models.SimpleMessageResponse) *GetBodyParamSimpleResponseOK {
-	o.Payload = payload
-	return o
-}
-
-// SetPayload sets the payload to the get body param simple response o k response
-func (o *GetBodyParamSimpleResponseOK) SetPayload(payload *models.SimpleMessageResponse) {
-	o.Payload = payload
-}
-
-// WriteResponse to the client
-func (o *GetBodyParamSimpleResponseOK) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
-
-	rw.WriteHeader(200)
-	if o.Payload != nil {
-		payload := o.Payload
-		if err := producer.Produce(rw, payload); err != nil {
-			panic(err) // let the recovery middleware deal with this
-		}
-	}
-}
-
 // GetBodyParamSimpleResponseInternalServerErrorCode is the HTTP code returned for type GetBodyParamSimpleResponseInternalServerError
 const GetBodyParamSimpleResponseInternalServerErrorCode int = 500
 
@@ -79,4 +35,48 @@ func (o *GetBodyParamSimpleResponseInternalServerError) WriteResponse(rw http.Re
 	rw.Header().Del(runtime.HeaderContentType) //Remove Content-Type on empty responses
 
 	rw.WriteHeader(500)
+}
+
+// GetBodyParamSimpleResponseNotImplementedCode is the HTTP code returned for type GetBodyParamSimpleResponseNotImplemented
+const GetBodyParamSimpleResponseNotImplementedCode int = 501
+
+/*GetBodyParamSimpleResponseNotImplemented API call runs, but there is no implementation
+
+swagger:response getBodyParamSimpleResponseNotImplemented
+*/
+type GetBodyParamSimpleResponseNotImplemented struct {
+
+	/*
+	  In: Body
+	*/
+	Payload *models.ErrorResponse `json:"body,omitempty"`
+}
+
+// NewGetBodyParamSimpleResponseNotImplemented creates GetBodyParamSimpleResponseNotImplemented with default headers values
+func NewGetBodyParamSimpleResponseNotImplemented() *GetBodyParamSimpleResponseNotImplemented {
+
+	return &GetBodyParamSimpleResponseNotImplemented{}
+}
+
+// WithPayload adds the payload to the get body param simple response not implemented response
+func (o *GetBodyParamSimpleResponseNotImplemented) WithPayload(payload *models.ErrorResponse) *GetBodyParamSimpleResponseNotImplemented {
+	o.Payload = payload
+	return o
+}
+
+// SetPayload sets the payload to the get body param simple response not implemented response
+func (o *GetBodyParamSimpleResponseNotImplemented) SetPayload(payload *models.ErrorResponse) {
+	o.Payload = payload
+}
+
+// WriteResponse to the client
+func (o *GetBodyParamSimpleResponseNotImplemented) WriteResponse(rw http.ResponseWriter, producer runtime.Producer) {
+
+	rw.WriteHeader(501)
+	if o.Payload != nil {
+		payload := o.Payload
+		if err := producer.Produce(rw, payload); err != nil {
+			panic(err) // let the recovery middleware deal with this
+		}
+	}
 }

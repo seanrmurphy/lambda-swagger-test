@@ -75,14 +75,14 @@ func init() {
         "summary": "Get endpoint defined which simply gives response indicating that POST should be used",
         "operationId": "getBodyParamComplexResponse",
         "responses": {
-          "200": {
-            "description": "Successful execution of API call",
-            "schema": {
-              "$ref": "#/definitions/SimpleMessageResponse"
-            }
-          },
           "500": {
             "description": "General Failure"
+          },
+          "501": {
+            "description": "API call runs, but there is no implementation",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
           }
         },
         "x-amazon-apigateway-integration": {
@@ -214,14 +214,14 @@ func init() {
         "summary": "Get endpoint defined which simply gives response indicating that POST should be used",
         "operationId": "getBodyParamErrorResponse",
         "responses": {
-          "200": {
-            "description": "Successful execution of API call",
-            "schema": {
-              "$ref": "#/definitions/SimpleMessageResponse"
-            }
-          },
           "500": {
             "description": "General Failure"
+          },
+          "501": {
+            "description": "API call runs, but there is no implementation",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
           }
         },
         "x-amazon-apigateway-integration": {
@@ -285,14 +285,14 @@ func init() {
         "summary": "Get endpoint defined which simply gives response indicating that POST should be used",
         "operationId": "getBodyParamSimpleResponse",
         "responses": {
-          "200": {
-            "description": "Successful execution of API call returning message in simple JSON object",
-            "schema": {
-              "$ref": "#/definitions/SimpleMessageResponse"
-            }
-          },
           "500": {
             "description": "General Failure"
+          },
+          "501": {
+            "description": "API call runs, but there is no implementation",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
           }
         },
         "x-amazon-apigateway-integration": {
@@ -793,14 +793,14 @@ func init() {
         "summary": "Get endpoint defined which simply gives response indicating that POST should be used",
         "operationId": "getBodyParamComplexResponse",
         "responses": {
-          "200": {
-            "description": "Successful execution of API call",
-            "schema": {
-              "$ref": "#/definitions/SimpleMessageResponse"
-            }
-          },
           "500": {
             "description": "General Failure"
+          },
+          "501": {
+            "description": "API call runs, but there is no implementation",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
           }
         },
         "x-amazon-apigateway-integration": {
@@ -932,14 +932,14 @@ func init() {
         "summary": "Get endpoint defined which simply gives response indicating that POST should be used",
         "operationId": "getBodyParamErrorResponse",
         "responses": {
-          "200": {
-            "description": "Successful execution of API call",
-            "schema": {
-              "$ref": "#/definitions/SimpleMessageResponse"
-            }
-          },
           "500": {
             "description": "General Failure"
+          },
+          "501": {
+            "description": "API call runs, but there is no implementation",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
           }
         },
         "x-amazon-apigateway-integration": {
@@ -1003,14 +1003,14 @@ func init() {
         "summary": "Get endpoint defined which simply gives response indicating that POST should be used",
         "operationId": "getBodyParamSimpleResponse",
         "responses": {
-          "200": {
-            "description": "Successful execution of API call returning message in simple JSON object",
-            "schema": {
-              "$ref": "#/definitions/SimpleMessageResponse"
-            }
-          },
           "500": {
             "description": "General Failure"
+          },
+          "501": {
+            "description": "API call runs, but there is no implementation",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
           }
         },
         "x-amazon-apigateway-integration": {

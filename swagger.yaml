@@ -312,10 +312,10 @@ paths:
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
       responses:
-        200:
-          description: Successful execution of API call returning message in simple JSON object
+        501:
+          description: API call runs, but there is no implementation
           schema:
-            $ref: '#/definitions/SimpleMessageResponse'
+            $ref: '#/definitions/ErrorResponse'
         500:
           description: General Failure
     post:
@@ -363,10 +363,10 @@ paths:
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
       responses:
-        200:
-          description: Successful execution of API call
+        501:
+          description: API call runs, but there is no implementation
           schema:
-            $ref: '#/definitions/SimpleMessageResponse'
+            $ref: '#/definitions/ErrorResponse'
         500:
           description: General Failure
     post:
@@ -414,10 +414,10 @@ paths:
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
       responses:
-        200:
-          description: Successful execution of API call
+        501:
+          description: API call runs, but there is no implementation
           schema:
-            $ref: '#/definitions/SimpleMessageResponse'
+            $ref: '#/definitions/ErrorResponse'
         500:
           description: General Failure
     post:
