@@ -21,7 +21,7 @@ func init() {
   "swagger": "2.0",
   "info": {
     "description": "A Test API for testing lambda/go-swagger integration",
-    "title": "Test API",
+    "title": "Lambda Go Swagger Test API",
     "contact": {
       "email": "sean@gopaddy.ch"
     },
@@ -32,22 +32,22 @@ func init() {
     "version": "1.0.0"
   },
   "paths": {
-    "/test": {
+    "/": {
       "get": {
-        "description": "An endpoint for testing",
+        "description": "Endpoint which returns the API version and the running backend version",
         "produces": [
           "application/json"
         ],
         "tags": [
           "open"
         ],
-        "summary": "Gets test endpoint",
-        "operationId": "getTestEndpoint",
+        "summary": "API Identifier endpoint",
+        "operationId": "getApiIdentifier",
         "responses": {
           "200": {
-            "description": "Test Response",
+            "description": "Returns API version and running backend version",
             "schema": {
-              "$ref": "#/definitions/TestResponse"
+              "$ref": "#/definitions/SimpleMessageResponse"
             }
           },
           "500": {
@@ -63,22 +63,65 @@ func init() {
         }
       }
     },
-    "/test/alternative": {
+    "/body-param/complex-response": {
       "get": {
-        "description": "An alternative endpoint for testing",
+        "description": "Get endpoint defined which simply gives response indicating that POST should be used",
         "produces": [
           "application/json"
         ],
         "tags": [
           "open"
         ],
-        "summary": "Gets test endpoint",
-        "operationId": "getAlternativeTestEndpoint",
+        "summary": "Get endpoint defined which simply gives response indicating that POST should be used",
+        "operationId": "getBodyParamComplexResponse",
+        "responses": {
+          "500": {
+            "description": "General Failure"
+          },
+          "501": {
+            "description": "API call runs, but there is no implementation",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      },
+      "post": {
+        "description": "An endpoint which takes an input parameter and returns a HTTP response code and a complex JSON object in a body",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "An endpoint which takes an input parameters and returns a HTTP response code and a complex JSON object in a body",
+        "operationId": "postBodyParamComplexResponse",
+        "parameters": [
+          {
+            "description": "An input JSON object required with this call",
+            "name": "bodyParam",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InputObject"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Test Response",
+            "description": "Successful execution of API call returning complex object",
             "schema": {
-              "$ref": "#/definitions/TestResponse"
+              "$ref": "#/definitions/ComplexObjectResponse"
             }
           },
           "500": {
@@ -94,21 +137,361 @@ func init() {
         }
       }
     },
-    "/test/with-param/{param}": {
+    "/body-param/empty-response": {
       "get": {
-        "description": "An alternative endpoint for testing",
+        "description": "Get endpoint defined which simply gives response indicating that POST should be used",
         "produces": [
           "application/json"
         ],
         "tags": [
           "open"
         ],
-        "summary": "Gets test endpoint",
-        "operationId": "getTestWithParameterEndpoint",
+        "summary": "Get endpoint defined which simply gives response indicating that POST should be used",
+        "operationId": "getBodyParamEmptyResponse",
+        "responses": {
+          "500": {
+            "description": "General Failure"
+          },
+          "501": {
+            "description": "API call runs, but there is no implementation",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      },
+      "post": {
+        "description": "Endpoint which takes a body parameter and returns a HTTP response code only",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "Endpoint which takes a body parameter and returns a HTTP response code only",
+        "operationId": "postBodyParamEmptyResponse",
+        "parameters": [
+          {
+            "description": "An arbitrary test parameter which is ignored here",
+            "name": "bodyParam",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InputObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful execution of API call"
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/body-param/error-response": {
+      "get": {
+        "description": "Get endpoint defined which simply gives response indicating that POST should be used",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "Get endpoint defined which simply gives response indicating that POST should be used",
+        "operationId": "getBodyParamErrorResponse",
+        "responses": {
+          "500": {
+            "description": "General Failure"
+          },
+          "501": {
+            "description": "API call runs, but there is no implementation",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      },
+      "post": {
+        "description": "An endpoint which takes an input parameter and returns a HTTP response code and an error response",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "An endpoint which takes an input parameter and returns a HTTP response code and an error response",
+        "operationId": "postBodyParamErrorResponse",
+        "parameters": [
+          {
+            "description": "An input JSON object required with this call",
+            "name": "bodyParam",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InputObject"
+            }
+          }
+        ],
+        "responses": {
+          "418": {
+            "description": "Error generated when executing API call",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/body-param/simple-response": {
+      "get": {
+        "description": "Get endpoint defined which simply gives response indicating that POST should be used",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "Get endpoint defined which simply gives response indicating that POST should be used",
+        "operationId": "getBodyParamSimpleResponse",
+        "responses": {
+          "500": {
+            "description": "General Failure"
+          },
+          "501": {
+            "description": "API call runs, but there is no implementation",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      },
+      "post": {
+        "description": "Endpoint which takes a body parameter and returns a HTTP response containing a simple message",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "Endpoint which takes a body parameter and returns a HTTP response containing a simple message",
+        "operationId": "postBodyParamSimpleResponse",
+        "parameters": [
+          {
+            "description": "An input JSON object required with this call",
+            "name": "bodyParam",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InputObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Test Response",
+            "schema": {
+              "$ref": "#/definitions/SimpleMessageResponse"
+            }
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/no-params/complex-response": {
+      "get": {
+        "description": "An endpoint which returns a HTTP response code and a complex JSON object in a body",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "An endpoint which returns a HTTP response code and a complex JSON object in a body",
+        "operationId": "getNoParamsComplexResponse",
+        "responses": {
+          "200": {
+            "description": "Successful execution of API call returning complex object",
+            "schema": {
+              "$ref": "#/definitions/ComplexObjectResponse"
+            }
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/no-params/empty-response": {
+      "get": {
+        "description": "An endpoint which returns a HTTP response code only",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "An endpoint which returns a HTTP response code only",
+        "operationId": "getNoParamsEmptyResponse",
+        "responses": {
+          "200": {
+            "description": "Successful execution of API call"
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/no-params/error-response": {
+      "get": {
+        "description": "An endpoint which returns a HTTP response code and an error response",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "An endpoint which returns a HTTP response code and an error response",
+        "operationId": "getNoParamsErrorResponse",
+        "responses": {
+          "418": {
+            "description": "Error generated when executing API call",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/no-params/simple-response": {
+      "get": {
+        "description": "An endpoint which returns a HTTP response code and a JSON encoded message in a body",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "An endpoint which returns a HTTP response code and a JSON encoded message in a body",
+        "operationId": "getNoParamsSimpleResponse",
+        "responses": {
+          "200": {
+            "description": "Successful execution of API call returning message in simple JSON object",
+            "schema": {
+              "$ref": "#/definitions/SimpleMessageResponse"
+            }
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/path-param/complex-response/{param}": {
+      "get": {
+        "description": "An endpoint which takes an input parameter and returns a HTTP response code and a complex JSON object in a body",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "An endpoint which takes an input parameters and returns a HTTP response code and a complex JSON object in a body",
+        "operationId": "getPathParamComplexResponse",
         "parameters": [
           {
             "type": "string",
-            "description": "Test Parameter",
+            "description": "An arbitrary test parameter which is returned in the response",
             "name": "param",
             "in": "path",
             "required": true
@@ -116,9 +499,126 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "Test Response",
+            "description": "Successful execution of API call returning complex object",
             "schema": {
-              "$ref": "#/definitions/TestResponse"
+              "$ref": "#/definitions/ComplexObjectResponse"
+            }
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/path-param/empty-response/{param}": {
+      "get": {
+        "description": "Endpoint which takes a parameter and returns a HTTP response code only",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "Endpoint which takes a parameter and returns a HTTP response code only",
+        "operationId": "getPathParamEmptyResponse",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "An arbitrary test parameter which is ignored here",
+            "name": "param",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful execution of API call"
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/path-param/error-response/{param}": {
+      "get": {
+        "description": "An endpoint which takes an input parameter and returns a HTTP response code and an error response",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "An endpoint which takes an input parameter and returns a HTTP response code and an error response",
+        "operationId": "getPathParamErrorResponse",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "An arbitrary test parameter which is returned in the response",
+            "name": "param",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "418": {
+            "description": "Error generated when executing API call",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/path-param/simple-response/{param}": {
+      "get": {
+        "description": "Endpoint which takes a parameter and returns a HTTP response containing a simple message",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "Endpoint which takes a parameter and returns a HTTP response containing a simple message",
+        "operationId": "getPathParamSimpleResponse",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "An arbitrary test parameter which is returned in the response",
+            "name": "param",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful execution of API call returning message in simple JSON object",
+            "schema": {
+              "$ref": "#/definitions/SimpleMessageResponse"
             }
           },
           "500": {
@@ -136,7 +636,59 @@ func init() {
     }
   },
   "definitions": {
-    "TestResponse": {
+    "ComplexObjectResponse": {
+      "type": "object",
+      "required": [
+        "object1",
+        "object2"
+      ],
+      "properties": {
+        "object1": {
+          "$ref": "#/definitions/SimpleObjectOne"
+        },
+        "object2": {
+          "$ref": "#/definitions/SimpleObjectTwo"
+        },
+        "optional_param": {
+          "type": "integer"
+        }
+      }
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "required": [
+        "error_number",
+        "error_string"
+      ],
+      "properties": {
+        "error_number": {
+          "type": "integer"
+        },
+        "error_string": {
+          "type": "string"
+        }
+      }
+    },
+    "InputObject": {
+      "type": "object",
+      "required": [
+        "string",
+        "descriptor",
+        "int_val"
+      ],
+      "properties": {
+        "descriptor": {
+          "type": "string"
+        },
+        "int_val": {
+          "type": "integer"
+        },
+        "string": {
+          "type": "string"
+        }
+      }
+    },
+    "SimpleMessageResponse": {
       "type": "object",
       "required": [
         "message"
@@ -146,11 +698,51 @@ func init() {
           "type": "string"
         }
       }
+    },
+    "SimpleObjectOne": {
+      "type": "object",
+      "required": [
+        "string_array",
+        "descriptor",
+        "int_val"
+      ],
+      "properties": {
+        "descriptor": {
+          "type": "string"
+        },
+        "int_val": {
+          "type": "integer"
+        },
+        "string_array": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SimpleObjectTwo": {
+      "type": "object",
+      "required": [
+        "int_array",
+        "descriptor"
+      ],
+      "properties": {
+        "descriptor": {
+          "type": "string"
+        },
+        "int_array": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      }
     }
   },
   "tags": [
     {
-      "description": "Calls which are open to anyone",
+      "description": "Calls which are unrestricted",
       "name": "open"
     }
   ]
@@ -159,7 +751,7 @@ func init() {
   "swagger": "2.0",
   "info": {
     "description": "A Test API for testing lambda/go-swagger integration",
-    "title": "Test API",
+    "title": "Lambda Go Swagger Test API",
     "contact": {
       "email": "sean@gopaddy.ch"
     },
@@ -170,22 +762,22 @@ func init() {
     "version": "1.0.0"
   },
   "paths": {
-    "/test": {
+    "/": {
       "get": {
-        "description": "An endpoint for testing",
+        "description": "Endpoint which returns the API version and the running backend version",
         "produces": [
           "application/json"
         ],
         "tags": [
           "open"
         ],
-        "summary": "Gets test endpoint",
-        "operationId": "getTestEndpoint",
+        "summary": "API Identifier endpoint",
+        "operationId": "getApiIdentifier",
         "responses": {
           "200": {
-            "description": "Test Response",
+            "description": "Returns API version and running backend version",
             "schema": {
-              "$ref": "#/definitions/TestResponse"
+              "$ref": "#/definitions/SimpleMessageResponse"
             }
           },
           "500": {
@@ -201,22 +793,65 @@ func init() {
         }
       }
     },
-    "/test/alternative": {
+    "/body-param/complex-response": {
       "get": {
-        "description": "An alternative endpoint for testing",
+        "description": "Get endpoint defined which simply gives response indicating that POST should be used",
         "produces": [
           "application/json"
         ],
         "tags": [
           "open"
         ],
-        "summary": "Gets test endpoint",
-        "operationId": "getAlternativeTestEndpoint",
+        "summary": "Get endpoint defined which simply gives response indicating that POST should be used",
+        "operationId": "getBodyParamComplexResponse",
+        "responses": {
+          "500": {
+            "description": "General Failure"
+          },
+          "501": {
+            "description": "API call runs, but there is no implementation",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      },
+      "post": {
+        "description": "An endpoint which takes an input parameter and returns a HTTP response code and a complex JSON object in a body",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "An endpoint which takes an input parameters and returns a HTTP response code and a complex JSON object in a body",
+        "operationId": "postBodyParamComplexResponse",
+        "parameters": [
+          {
+            "description": "An input JSON object required with this call",
+            "name": "bodyParam",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InputObject"
+            }
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Test Response",
+            "description": "Successful execution of API call returning complex object",
             "schema": {
-              "$ref": "#/definitions/TestResponse"
+              "$ref": "#/definitions/ComplexObjectResponse"
             }
           },
           "500": {
@@ -232,21 +867,361 @@ func init() {
         }
       }
     },
-    "/test/with-param/{param}": {
+    "/body-param/empty-response": {
       "get": {
-        "description": "An alternative endpoint for testing",
+        "description": "Get endpoint defined which simply gives response indicating that POST should be used",
         "produces": [
           "application/json"
         ],
         "tags": [
           "open"
         ],
-        "summary": "Gets test endpoint",
-        "operationId": "getTestWithParameterEndpoint",
+        "summary": "Get endpoint defined which simply gives response indicating that POST should be used",
+        "operationId": "getBodyParamEmptyResponse",
+        "responses": {
+          "500": {
+            "description": "General Failure"
+          },
+          "501": {
+            "description": "API call runs, but there is no implementation",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      },
+      "post": {
+        "description": "Endpoint which takes a body parameter and returns a HTTP response code only",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "Endpoint which takes a body parameter and returns a HTTP response code only",
+        "operationId": "postBodyParamEmptyResponse",
+        "parameters": [
+          {
+            "description": "An arbitrary test parameter which is ignored here",
+            "name": "bodyParam",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InputObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful execution of API call"
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/body-param/error-response": {
+      "get": {
+        "description": "Get endpoint defined which simply gives response indicating that POST should be used",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "Get endpoint defined which simply gives response indicating that POST should be used",
+        "operationId": "getBodyParamErrorResponse",
+        "responses": {
+          "500": {
+            "description": "General Failure"
+          },
+          "501": {
+            "description": "API call runs, but there is no implementation",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      },
+      "post": {
+        "description": "An endpoint which takes an input parameter and returns a HTTP response code and an error response",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "An endpoint which takes an input parameter and returns a HTTP response code and an error response",
+        "operationId": "postBodyParamErrorResponse",
+        "parameters": [
+          {
+            "description": "An input JSON object required with this call",
+            "name": "bodyParam",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InputObject"
+            }
+          }
+        ],
+        "responses": {
+          "418": {
+            "description": "Error generated when executing API call",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/body-param/simple-response": {
+      "get": {
+        "description": "Get endpoint defined which simply gives response indicating that POST should be used",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "Get endpoint defined which simply gives response indicating that POST should be used",
+        "operationId": "getBodyParamSimpleResponse",
+        "responses": {
+          "500": {
+            "description": "General Failure"
+          },
+          "501": {
+            "description": "API call runs, but there is no implementation",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      },
+      "post": {
+        "description": "Endpoint which takes a body parameter and returns a HTTP response containing a simple message",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "Endpoint which takes a body parameter and returns a HTTP response containing a simple message",
+        "operationId": "postBodyParamSimpleResponse",
+        "parameters": [
+          {
+            "description": "An input JSON object required with this call",
+            "name": "bodyParam",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/InputObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Test Response",
+            "schema": {
+              "$ref": "#/definitions/SimpleMessageResponse"
+            }
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/no-params/complex-response": {
+      "get": {
+        "description": "An endpoint which returns a HTTP response code and a complex JSON object in a body",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "An endpoint which returns a HTTP response code and a complex JSON object in a body",
+        "operationId": "getNoParamsComplexResponse",
+        "responses": {
+          "200": {
+            "description": "Successful execution of API call returning complex object",
+            "schema": {
+              "$ref": "#/definitions/ComplexObjectResponse"
+            }
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/no-params/empty-response": {
+      "get": {
+        "description": "An endpoint which returns a HTTP response code only",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "An endpoint which returns a HTTP response code only",
+        "operationId": "getNoParamsEmptyResponse",
+        "responses": {
+          "200": {
+            "description": "Successful execution of API call"
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/no-params/error-response": {
+      "get": {
+        "description": "An endpoint which returns a HTTP response code and an error response",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "An endpoint which returns a HTTP response code and an error response",
+        "operationId": "getNoParamsErrorResponse",
+        "responses": {
+          "418": {
+            "description": "Error generated when executing API call",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/no-params/simple-response": {
+      "get": {
+        "description": "An endpoint which returns a HTTP response code and a JSON encoded message in a body",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "An endpoint which returns a HTTP response code and a JSON encoded message in a body",
+        "operationId": "getNoParamsSimpleResponse",
+        "responses": {
+          "200": {
+            "description": "Successful execution of API call returning message in simple JSON object",
+            "schema": {
+              "$ref": "#/definitions/SimpleMessageResponse"
+            }
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/path-param/complex-response/{param}": {
+      "get": {
+        "description": "An endpoint which takes an input parameter and returns a HTTP response code and a complex JSON object in a body",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "An endpoint which takes an input parameters and returns a HTTP response code and a complex JSON object in a body",
+        "operationId": "getPathParamComplexResponse",
         "parameters": [
           {
             "type": "string",
-            "description": "Test Parameter",
+            "description": "An arbitrary test parameter which is returned in the response",
             "name": "param",
             "in": "path",
             "required": true
@@ -254,9 +1229,126 @@ func init() {
         ],
         "responses": {
           "200": {
-            "description": "Test Response",
+            "description": "Successful execution of API call returning complex object",
             "schema": {
-              "$ref": "#/definitions/TestResponse"
+              "$ref": "#/definitions/ComplexObjectResponse"
+            }
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/path-param/empty-response/{param}": {
+      "get": {
+        "description": "Endpoint which takes a parameter and returns a HTTP response code only",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "Endpoint which takes a parameter and returns a HTTP response code only",
+        "operationId": "getPathParamEmptyResponse",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "An arbitrary test parameter which is ignored here",
+            "name": "param",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful execution of API call"
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/path-param/error-response/{param}": {
+      "get": {
+        "description": "An endpoint which takes an input parameter and returns a HTTP response code and an error response",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "An endpoint which takes an input parameter and returns a HTTP response code and an error response",
+        "operationId": "getPathParamErrorResponse",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "An arbitrary test parameter which is returned in the response",
+            "name": "param",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "418": {
+            "description": "Error generated when executing API call",
+            "schema": {
+              "$ref": "#/definitions/ErrorResponse"
+            }
+          },
+          "500": {
+            "description": "General Failure"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "httpMethod": "post",
+          "type": "aws_proxy",
+          "uri": {
+            "Fn::Sub": "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations"
+          }
+        }
+      }
+    },
+    "/path-param/simple-response/{param}": {
+      "get": {
+        "description": "Endpoint which takes a parameter and returns a HTTP response containing a simple message",
+        "produces": [
+          "application/json"
+        ],
+        "tags": [
+          "open"
+        ],
+        "summary": "Endpoint which takes a parameter and returns a HTTP response containing a simple message",
+        "operationId": "getPathParamSimpleResponse",
+        "parameters": [
+          {
+            "type": "string",
+            "description": "An arbitrary test parameter which is returned in the response",
+            "name": "param",
+            "in": "path",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful execution of API call returning message in simple JSON object",
+            "schema": {
+              "$ref": "#/definitions/SimpleMessageResponse"
             }
           },
           "500": {
@@ -274,7 +1366,59 @@ func init() {
     }
   },
   "definitions": {
-    "TestResponse": {
+    "ComplexObjectResponse": {
+      "type": "object",
+      "required": [
+        "object1",
+        "object2"
+      ],
+      "properties": {
+        "object1": {
+          "$ref": "#/definitions/SimpleObjectOne"
+        },
+        "object2": {
+          "$ref": "#/definitions/SimpleObjectTwo"
+        },
+        "optional_param": {
+          "type": "integer"
+        }
+      }
+    },
+    "ErrorResponse": {
+      "type": "object",
+      "required": [
+        "error_number",
+        "error_string"
+      ],
+      "properties": {
+        "error_number": {
+          "type": "integer"
+        },
+        "error_string": {
+          "type": "string"
+        }
+      }
+    },
+    "InputObject": {
+      "type": "object",
+      "required": [
+        "string",
+        "descriptor",
+        "int_val"
+      ],
+      "properties": {
+        "descriptor": {
+          "type": "string"
+        },
+        "int_val": {
+          "type": "integer"
+        },
+        "string": {
+          "type": "string"
+        }
+      }
+    },
+    "SimpleMessageResponse": {
       "type": "object",
       "required": [
         "message"
@@ -284,11 +1428,51 @@ func init() {
           "type": "string"
         }
       }
+    },
+    "SimpleObjectOne": {
+      "type": "object",
+      "required": [
+        "string_array",
+        "descriptor",
+        "int_val"
+      ],
+      "properties": {
+        "descriptor": {
+          "type": "string"
+        },
+        "int_val": {
+          "type": "integer"
+        },
+        "string_array": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "SimpleObjectTwo": {
+      "type": "object",
+      "required": [
+        "int_array",
+        "descriptor"
+      ],
+      "properties": {
+        "descriptor": {
+          "type": "string"
+        },
+        "int_array": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        }
+      }
     }
   },
   "tags": [
     {
-      "description": "Calls which are open to anyone",
+      "description": "Calls which are unrestricted",
       "name": "open"
     }
   ]
