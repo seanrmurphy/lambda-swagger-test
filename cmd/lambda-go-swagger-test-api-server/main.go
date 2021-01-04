@@ -22,12 +22,12 @@ func main() {
 		log.Fatalln(err)
 	}
 
-	api := operations.NewTestAPIAPI(swaggerSpec)
+	api := operations.NewLambdaGoSwaggerTestAPIAPI(swaggerSpec)
 	server := restapi.NewServer(api)
 	defer server.Shutdown()
 
 	parser := flags.NewParser(server, flags.Default)
-	parser.ShortDescription = "Test API"
+	parser.ShortDescription = "Lambda Go Swagger Test API"
 	parser.LongDescription = "A Test API for testing lambda/go-swagger integration"
 	server.ConfigureFlags()
 	for _, optsGroup := range api.CommandLineOptionsGroups {
