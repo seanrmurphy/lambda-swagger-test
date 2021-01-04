@@ -10,7 +10,13 @@ import (
 )
 
 func GetApiIdentifier(params open.GetAPIIdentifierParams) middleware.Responder {
-	resp := open.NewGetAPIIdentifierOK()
+	str := "go-swagger Lambda integration API - version 1.0"
+
+	r := models.SimpleMessageResponse{
+		Message: &str,
+	}
+
+	resp := open.NewGetAPIIdentifierOK().WithPayload(&r)
 
 	return resp
 }
@@ -34,18 +40,18 @@ func GetNoParamsSimpleResponse(params open.GetNoParamsSimpleResponseParams) midd
 
 func GetNoParamsComplexResponse(params open.GetNoParamsComplexResponseParams) middleware.Responder {
 	stringArray := []string{"param1", "param2"}
-	descriptor := "A descriptive string (object1)"
+	descriptor1 := "A descriptive string (object1)"
 	intVal := rand.Int63()
 	o1 := models.SimpleObjectOne{
 		StringArray: stringArray,
-		Descriptor:  &descriptor,
+		Descriptor:  &descriptor1,
 		IntVal:      &intVal,
 	}
 
-	descriptor = "A descriptive string (object2)"
+	descriptor2 := "A descriptive string (object2)"
 	intArray := []int64{rand.Int63(), rand.Int63(), rand.Int63(), rand.Int63()}
 	o2 := models.SimpleObjectTwo{
-		Descriptor: &descriptor,
+		Descriptor: &descriptor2,
 		IntArray:   intArray,
 	}
 	r := models.ComplexObjectResponse{
@@ -94,18 +100,18 @@ func GetPathParamComplexResponse(params open.GetPathParamComplexResponseParams) 
 	str := fmt.Sprintf("Input param = %v", pathParam)
 
 	stringArray := []string{"param1", "param2", str}
-	descriptor := "A descriptive string (object1)"
+	descriptor1 := "A descriptive string (object1)"
 	intVal := rand.Int63()
 	o1 := models.SimpleObjectOne{
 		StringArray: stringArray,
-		Descriptor:  &descriptor,
+		Descriptor:  &descriptor1,
 		IntVal:      &intVal,
 	}
 
-	descriptor = "A descriptive string (object2)"
+	descriptor2 := "A descriptive string (object2)"
 	intArray := []int64{rand.Int63(), rand.Int63(), rand.Int63(), rand.Int63()}
 	o2 := models.SimpleObjectTwo{
-		Descriptor: &descriptor,
+		Descriptor: &descriptor2,
 		IntArray:   intArray,
 	}
 	r := models.ComplexObjectResponse{
@@ -198,18 +204,18 @@ func PostBodyParamComplexResponse(params open.PostBodyParamComplexResponseParams
 		inputParams.Descriptor, inputParams.IntVal, inputParams.String)
 
 	stringArray := []string{"param1", "param2", str}
-	descriptor := "A descriptive string (object1)"
+	descriptor1 := "A descriptive string (object1)"
 	intVal := rand.Int63()
 	o1 := models.SimpleObjectOne{
 		StringArray: stringArray,
-		Descriptor:  &descriptor,
+		Descriptor:  &descriptor1,
 		IntVal:      &intVal,
 	}
 
-	descriptor = "A descriptive string (object2)"
+	descriptor2 := "A descriptive string (object2)"
 	intArray := []int64{rand.Int63(), rand.Int63(), rand.Int63(), rand.Int63()}
 	o2 := models.SimpleObjectTwo{
-		Descriptor: &descriptor,
+		Descriptor: &descriptor2,
 		IntArray:   intArray,
 	}
 	r := models.ComplexObjectResponse{

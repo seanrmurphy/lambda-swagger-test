@@ -16,7 +16,6 @@ tags:
 - name: open
   description: Calls which are unrestricted
 
-
 paths:
   /:
     get:
@@ -278,6 +277,8 @@ paths:
         Endpoint which takes a body parameter and returns a HTTP response code only
       produces:
       - application/json
+      consumes:
+      - application/json
       x-amazon-apigateway-integration:
         httpMethod: post
         type: aws_proxy
@@ -326,6 +327,8 @@ paths:
       description:
         Endpoint which takes a body parameter and returns a HTTP response containing a simple message
       produces:
+      - application/json
+      consumes:
       - application/json
       x-amazon-apigateway-integration:
         httpMethod: post
@@ -378,6 +381,8 @@ paths:
         An endpoint which takes an input parameter and returns a HTTP response code and a complex JSON object in a body
       produces:
       - application/json
+      consumes:
+      - application/json
       x-amazon-apigateway-integration:
         httpMethod: post
         type: aws_proxy
@@ -428,6 +433,8 @@ paths:
       description:
         An endpoint which takes an input parameter and returns a HTTP response code and an error response
       produces:
+      - application/json
+      consumes:
       - application/json
       x-amazon-apigateway-integration:
         httpMethod: post

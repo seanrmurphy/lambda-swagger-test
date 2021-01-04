@@ -95,6 +95,9 @@ func init() {
       },
       "post": {
         "description": "An endpoint which takes an input parameter and returns a HTTP response code and a complex JSON object in a body",
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -166,6 +169,9 @@ func init() {
       },
       "post": {
         "description": "Endpoint which takes a body parameter and returns a HTTP response code only",
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -234,6 +240,9 @@ func init() {
       },
       "post": {
         "description": "An endpoint which takes an input parameter and returns a HTTP response code and an error response",
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -305,6 +314,9 @@ func init() {
       },
       "post": {
         "description": "Endpoint which takes a body parameter and returns a HTTP response containing a simple message",
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -813,6 +825,9 @@ func init() {
       },
       "post": {
         "description": "An endpoint which takes an input parameter and returns a HTTP response code and a complex JSON object in a body",
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -884,6 +899,9 @@ func init() {
       },
       "post": {
         "description": "Endpoint which takes a body parameter and returns a HTTP response code only",
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -952,6 +970,9 @@ func init() {
       },
       "post": {
         "description": "An endpoint which takes an input parameter and returns a HTTP response code and an error response",
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -1023,6 +1044,9 @@ func init() {
       },
       "post": {
         "description": "Endpoint which takes a body parameter and returns a HTTP response containing a simple message",
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
