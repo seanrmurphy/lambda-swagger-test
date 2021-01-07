@@ -6,74 +6,89 @@ then
 	exit 1
 fi
 
+curlwithcode() {
+    code=0
+    # Run curl in a separate command, capturing output of -w "%{http_code}" into statuscode
+    # and sending the content to a file with -o >(cat >/tmp/curl_body)
+    statuscode=$(curl -s -w "%{http_code}" \
+        -o >(cat >/tmp/curl_body) \
+        "$@"
+    ) || code="$?"
+
+    body="$(cat /tmp/curl_body | jq)"
+    echo "statuscode : $statuscode"
+    echo "exitcode : $code"
+    echo "body : $body"
+}
+
 echo
 echo "Sending GET request to base endpoint to obtain version information"
-curl -s $RESTAPI/ | jq
+curlwithcode -s $RESTAPI/
 
 echo
-echo "Sending GET request to /no-params/empty-response"
-curl -s $RESTAPI/no-params/empty-response | jq
+echo "Sending GET request to /no-params/empty-response - expect HTTP 200 with no body"
+curlwithcode $RESTAPI/no-params/empty-response
 
 echo
-echo "Sending GET request to /no-params/simple-response"
-curl -s $RESTAPI/no-params/simple-response | jq
+echo "Sending GET request to /no-params/simple-response - expect HTTP 200 with simple body"
+curlwithcode $RESTAPI/no-params/simple-response
 
 echo
-echo "Sending GET request to /no-params/complex-response"
-curl -s $RESTAPI/no-params/complex-response | jq
+echo "Sending GET request to /no-params/complex-response - expect HTTP 200 with complex body"
+curlwithcode $RESTAPI/no-params/complex-response
 
 echo
-echo "Sending GET request to /no-params/error-response"
-curl -s $RESTAPI/no-params/empty-response | jq
+echo "Sending GET request to /no-params/error-response - expect HTTP 418 with error message"
+curlwithcode $RESTAPI/no-params/empty-response
 
 PARAM='1234'
 
 echo
-echo "Sending GET request to /path-param/empty-response"
-curl -s $RESTAPI/path-param/empty-response/$PARAM | jq
+echo "Sending GET request to /path-param/empty-response - expect HTTP 200 with no body"
+curlwithcode $RESTAPI/path-param/empty-response/$PARAM
 
 echo
-echo "Sending GET request to /path-param/simple-response"
-curl -s $RESTAPI/path-param/simple-response/$PARAM | jq
+echo "Sending GET request to /path-param/simple-response - expect HTTP 200 with simple body"
+curlwithcode $RESTAPI/path-param/simple-response/$PARAM
 
 echo
-echo "Sending GET request to /path-param/complex-response"
-curl -s $RESTAPI/path-param/complex-response/$PARAM | jq
+echo "Sending GET request to /path-param/complex-response - expect HTTP 200 with complex body"
+curlwithcode $RESTAPI/path-param/complex-response/$PARAM
 
 echo
-echo "Sending GET request to /path-param/error-response"
-curl -s $RESTAPI/path-param/empty-response/$PARAM | jq
+echo "Sending GET request to /path-param/error-response - expect HTTP 418 with error message"
+curlwithcode $RESTAPI/path-param/empty-response/$PARAM
 
 PARAM='1234'
 
 echo
-echo "Sending GET request to /body-param/empty-response"
-curl -s $RESTAPI/body-param/empty-response | jq
+echo "Sending GET request to /body-param/empty-response - expect HTTP 501 with error message"
+curlwithcode $RESTAPI/body-param/empty-response
 
 echo
-echo "Sending POST request to /body-param/empty-response"
-curl -s -X POST -H 'Content-Type: application/json' -d '{"string": "hello", "descriptor": "a wonderful day", "int_val": 42}' $RESTAPI/body-param/empty-response | jq
+echo "Sending POST request to /body-param/empty-response - expect HTTP 200 with no body"
+curlwithcode -X POST -H 'Content-Type: application/json' -d '{"string": "hello", "descriptor": "a wonderful day", "int_val": 42}' $RESTAPI/body-param/empty-response
 
 echo
-echo "Sending GET request to /body-param/simple-response"
-curl -s $RESTAPI/body-param/simple-response | jq
+echo "Sending GET request to /body-param/simple-response - expect HTTP 501 with error message"
+curlwithcode $RESTAPI/body-param/simple-response
 
 echo
-echo "Sending POST request to /body-param/simple-response"
-curl -s -X POST -H 'Content-Type: application/json' -d '{"string": "hello", "descriptor": "a wonderful day", "int_val": 42}' $RESTAPI/body-param/simple-response | jq
+echo "Sending POST request to /body-param/simple-response - expect HTTP 200 with simple body"
+curlwithcode -X POST -H 'Content-Type: application/json' -d '{"string": "hello", "descriptor": "a wonderful day", "int_val": 42}' $RESTAPI/body-param/simple-response
 
 echo
-echo "Sending GET request to /body-param/complex-response"
-curl -s $RESTAPI/body-param/complex-response | jq
+echo "Sending GET request to /body-param/complex-response - expect HTTP 501 with error message"
+curlwithcode $RESTAPI/body-param/complex-response
 
 echo
-echo "Sending POST request to /body-param/complex-response"
-curl -s -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{"string": "hello", "descriptor": "a wonderful day", "int_val": 42}' $RESTAPI/body-param/complex-response | jq
+echo "Sending POST request to /body-param/complex-response - expect HTTP 200 with complex body"
+curlwithcode -X POST -H 'Accept: application/json' -H 'Content-Type: application/json' -d '{"string": "hello", "descriptor": "a wonderful day", "int_val": 42}' $RESTAPI/body-param/complex-response
 
 echo
-echo "Sending GET request to /body-param/error-response"
-curl -s $RESTAPI/body-param/error-response | jq
+echo "Sending GET request to /body-param/error-response - expect HTTP 501 with error message"
+curlwithcode $RESTAPI/body-param/error-response
 
 echo
-echo "Sending POST request to /body-param/error-response"
-curl -s -X POST -H 'Content-Type: application/json' -d '{"string": "hello", "descriptor": "a wonderful day", "int_val": 42}' $RESTAPI/body-param/error-response | jq
+echo "Sending POST request to /body-param/error-response - expect HTTP 418 with error message"
+curlwithcode -X POST -H 'Content-Type: application/json' -d '{"string": "hello", "descriptor": "a wonderful day", "int_val": 42}' $RESTAPI/body-param/error-response
