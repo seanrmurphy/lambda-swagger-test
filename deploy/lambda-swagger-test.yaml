@@ -1,16 +1,15 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 Description: >
-  lambda-swagger-test-application
+  lambda-swagger-test
 
-  SAM Template for simple covid travel application which demonstrates a frontend
-  with forms integration and a lambda hosted backend.
+  SAM Template for simple application to demonstrate use of go-swagger on Lambda.
 
 Resources:
   LambdaSwaggerTestAPI:
     Type: AWS::Serverless::Api
     Properties:
-      StageName: staging
+      StageName: test
 
       # Allows www.example.com to call these APIs
       # SAM will automatically add AllowMethods with a list of methods for this API
@@ -21,13 +20,13 @@ Resources:
           Name: 'AWS::Include'
           # Replace <bucket> with your bucket name
           Parameters:
-            Location: ../../swagger.yaml
+            Location: ../swagger.yaml
 
   LambdaSwaggerTestFunction:
     Type: AWS::Serverless::Function
     Properties:
       # Replace <bucket> with your bucket name
-      CodeUri: ../../lambda-swagger-test.zip
+      CodeUri: ./lambda-swagger-test.zip
       Handler: lambda-swagger-test
       Runtime: go1.x
       Events:
@@ -46,11 +45,11 @@ Resources:
 
 Outputs:
   LambdaSwaggerTestFunctionArn:
-    Description: "Travel Status function ARN"
+    Description: "REST API Handler function"
     Value: !GetAtt LambdaSwaggerTestFunction.Arn
 
   LambdaSwaggerTestAPIArn:
-    Description: "The endpoint to connect to the travel update service (staging)"
+    Description: "The endpoint to connect to the REST API (staging)"
     #Value: !GetAtt TravelUpdateAPI.Arn
     Value: !Join [ '', [ 'https://', !Ref LambdaSwaggerTestAPI, '.execute-api.',!Ref 'AWS::Region','.amazonaws.com/staging'] ]
 
