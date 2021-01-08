@@ -3,6 +3,8 @@
 A small application to demonstrate the use of the `go-swagger` library with the
 go runtime on AWS Lambda.
 
+Check out this medium post for more information.
+
 # Requirements
 
 - Modern go toolchain - I used go 1.14.6
