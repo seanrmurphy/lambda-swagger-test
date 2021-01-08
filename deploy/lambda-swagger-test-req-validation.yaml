@@ -20,7 +20,7 @@ Resources:
           Name: 'AWS::Include'
           # Replace <bucket> with your bucket name
           Parameters:
-            Location: ../swagger.yaml
+            Location: ../swagger-req-validation.yaml
 
   LambdaSwaggerTestFunction:
     Type: AWS::Serverless::Function

@@ -11,6 +11,16 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 
+x-amazon-apigateway-request-validators:
+  basic:
+    validateRequestBody: true
+    validateRequestParameters: true
+  params-only:
+    validateRequestBody: false
+    validateRequestParameters: true
+# default is no validation
+x-amazon-apigateway-request-validator: NONE
+
 # tags are used for organizing operations
 tags:
 - name: open
@@ -147,6 +157,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: params-only
       responses:
         200:
           description: Successful execution of API call
@@ -174,6 +185,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: params-only
       responses:
         200:
           description: Successful execution of API call returning message in simple JSON object
@@ -203,6 +215,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: params-only
       responses:
         200:
           description: Successful execution of API call returning complex object
@@ -232,6 +245,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: params-only
       responses:
         418:
           description: Error generated when executing API call
@@ -261,6 +275,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: basic
       responses:
         501:
           description: API call runs, but there is no implementation
@@ -284,6 +299,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: basic
       responses:
         200:
           description: Successful execution of API call
@@ -296,6 +312,7 @@ paths:
         schema:
           $ref: '#/definitions/InputObject'
         required: true
+
 
   /body-param/simple-response:
     get:
@@ -312,6 +329,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: basic
       responses:
         501:
           description: API call runs, but there is no implementation
@@ -335,6 +353,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: basic
       responses:
         200:
           description: Test Response
@@ -365,6 +384,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: basic
       responses:
         501:
           description: API call runs, but there is no implementation
@@ -388,6 +408,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: basic
       responses:
         200:
           description: Successful execution of API call returning complex object
@@ -418,6 +439,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: basic
       responses:
         501:
           description: API call runs, but there is no implementation
@@ -441,6 +463,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: basic
       responses:
         418:
           description: Error generated when executing API call

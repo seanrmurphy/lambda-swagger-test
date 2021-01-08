@@ -1,6 +1,8 @@
 package main
 
 import (
+	"net/http"
+
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
 	"github.com/awslabs/aws-lambda-go-api-proxy/httpadapter"
@@ -12,6 +14,7 @@ import (
 )
 
 var httpAdapter *httpadapter.HandlerAdapter
+var nullHandler = false
 
 func setupHandlers() *operations.LambdaGoSwaggerTestAPIAPI {
 
@@ -53,7 +56,14 @@ func init() {
 
 // Handler handles API requests
 func Handler(req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
-	return httpAdapter.Proxy(req)
+	if nullHandler {
+		return events.APIGatewayProxyResponse{
+			StatusCode: http.StatusOK,
+			Body:       `{"message": "Null handler operational - always returns this message"}`,
+		}, nil
+	} else {
+		return httpAdapter.Proxy(req)
+	}
 }
 
 func main() {
