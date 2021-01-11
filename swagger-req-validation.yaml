@@ -11,6 +11,16 @@ info:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
 
+x-amazon-apigateway-request-validators:
+  basic:
+    validateRequestBody: true
+    validateRequestParameters: true
+  params-only:
+    validateRequestBody: false
+    validateRequestParameters: true
+# default is no validation
+x-amazon-apigateway-request-validator: NONE
+
 # tags are used for organizing operations
 tags:
 - name: open
@@ -131,7 +141,8 @@ paths:
         500:
           description: General Failure
 
-  /path-param/empty-response/{path-param}:
+
+  /path-param/empty-response/{param}:
     get:
       tags:
       - open
@@ -146,6 +157,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: params-only
       responses:
         200:
           description: Successful execution of API call
@@ -153,12 +165,12 @@ paths:
           description: General Failure
       parameters:
       - in: path
-        name: path-param
+        name: param
         description: An arbitrary test parameter which is ignored here
         type: integer
         required: true
 
-  /path-param/simple-response/{path-param}:
+  /path-param/simple-response/{param}:
     get:
       tags:
       - open
@@ -173,6 +185,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: params-only
       responses:
         200:
           description: Successful execution of API call returning message in simple JSON object
@@ -182,12 +195,12 @@ paths:
           description: General Failure
       parameters:
       - in: path
-        name: path-param
+        name: param
         description: An arbitrary test parameter which is returned in the response
         type: integer
         required: true
 
-  /path-param/complex-response/{path-param}:
+  /path-param/complex-response/{param}:
     get:
       tags:
       - open
@@ -202,6 +215,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: params-only
       responses:
         200:
           description: Successful execution of API call returning complex object
@@ -211,12 +225,12 @@ paths:
           description: General Failure
       parameters:
       - in: path
-        name: path-param
+        name: param
         description: An arbitrary test parameter which is returned in the response
         type: integer
         required: true
 
-  /path-param/error-response/{path-param}:
+  /path-param/error-response/{param}:
     get:
       tags:
       - open
@@ -231,6 +245,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: params-only
       responses:
         418:
           description: Error generated when executing API call
@@ -240,60 +255,9 @@ paths:
           description: General Failure
       parameters:
       - in: path
-        name: path-param
+        name: param
         description: An arbitrary test parameter which is returned in the response
         type: integer
-        required: true
-
-  /body-param/empty-response:
-    get:
-      tags:
-      - open
-      summary: Get endpoint defined which simply gives response indicating that POST should be used
-      operationId: getBodyParamEmptyResponse
-      description:
-        Get endpoint defined which simply gives response indicating that POST should be used
-      produces:
-      - application/json
-      x-amazon-apigateway-integration:
-        httpMethod: post
-        type: aws_proxy
-        uri:
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
-      responses:
-        501:
-          description: API call runs, but there is no implementation
-          schema:
-            $ref: '#/definitions/ErrorResponse'
-        500:
-          description: General Failure
-    post:
-      tags:
-      - open
-      summary: Endpoint which takes a body parameter and returns a HTTP response code only
-      operationId: postBodyParamEmptyResponse
-      description:
-        Endpoint which takes a body parameter and returns a HTTP response code only
-      produces:
-      - application/json
-      consumes:
-      - application/json
-      x-amazon-apigateway-integration:
-        httpMethod: post
-        type: aws_proxy
-        uri:
-          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
-      responses:
-        200:
-          description: Successful execution of API call
-        500:
-          description: General Failure
-      parameters:
-      - in: body
-        name: bodyParam
-        description: An arbitrary test parameter which is ignored here
-        schema:
-          $ref: '#/definitions/InputObject'
         required: true
 
   /query-param/empty-response:
@@ -311,6 +275,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: params-only
       responses:
         200:
           description: Successful execution of API call
@@ -338,6 +303,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: params-only
       responses:
         200:
           description: Successful execution of API call returning message in simple JSON object
@@ -367,6 +333,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: params-only
       responses:
         200:
           description: Successful execution of API call returning complex object
@@ -396,6 +363,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: params-only
       responses:
         418:
           description: Error generated when executing API call
@@ -409,6 +377,60 @@ paths:
         description: An arbitrary test parameter which is returned in the response
         type: integer
         required: true
+
+  /body-param/empty-response:
+    get:
+      tags:
+      - open
+      summary: Get endpoint defined which simply gives response indicating that POST should be used
+      operationId: getBodyParamEmptyResponse
+      description:
+        Get endpoint defined which simply gives response indicating that POST should be used
+      produces:
+      - application/json
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: basic
+      responses:
+        501:
+          description: API call runs, but there is no implementation
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: General Failure
+    post:
+      tags:
+      - open
+      summary: Endpoint which takes a body parameter and returns a HTTP response code only
+      operationId: postBodyParamEmptyResponse
+      description:
+        Endpoint which takes a body parameter and returns a HTTP response code only
+      produces:
+      - application/json
+      consumes:
+      - application/json
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: basic
+      responses:
+        200:
+          description: Successful execution of API call
+        500:
+          description: General Failure
+      parameters:
+      - in: body
+        name: bodyParam
+        description: An arbitrary test parameter which is ignored here
+        schema:
+          $ref: '#/definitions/InputObject'
+        required: true
+
 
   /body-param/simple-response:
     get:
@@ -425,6 +447,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: basic
       responses:
         501:
           description: API call runs, but there is no implementation
@@ -448,6 +471,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: basic
       responses:
         200:
           description: Test Response
@@ -478,6 +502,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: basic
       responses:
         501:
           description: API call runs, but there is no implementation
@@ -501,6 +526,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: basic
       responses:
         200:
           description: Successful execution of API call returning complex object
@@ -531,6 +557,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: basic
       responses:
         501:
           description: API call runs, but there is no implementation
@@ -554,6 +581,7 @@ paths:
         type: aws_proxy
         uri:
           Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      x-amazon-apigateway-request-validator: basic
       responses:
         418:
           description: Error generated when executing API call
