@@ -1,16 +1,28 @@
 # What
 
-A small application to demonstrate the use of the `go-swagger` library with the
-go runtime on AWS Lambda.
+A small application to demonstrate the use of `go-swagger` in an AWS context,
+linking in the API Gateway and Lambda functions.
 
-Check out this medium post for more information.
+Check out [this medium post](https://medium.com/@sean_24982/rest-apis-using-go-swagger-lambda-functions-and-the-api-gateway-b9c0b8c5712b) for more information.
 
 # Requirements
 
-- Modern go toolchain - I used go 1.14.6
-- go-swagger - I used v0.25.0
-- AWS SAM application management tool
+- Modern [`go`](https://golang.org/) toolchain - I used go 1.14.6
+- [`go-swagger`](https://github.com/go-swagger/go-swagger) - I used v0.25.0
+- AWS [SAM](https://aws.amazon.com/serverless/sam/) application management tool
 - Basic utilities: `zip` for function upload to AWS, `curl` and `jq` for testing
+
+# Install
+
+Install this repo using `go get`
+
+```
+go get github.com/seanrmurphy/lambda-swagger-test
+```
+
+Note that as it makes reference to code which will be generated using swagger
+tools, `go get` will generate errors but the content will be there. (It is of
+course possible to install this using `git clone` in the appropriate place).
 
 # Build, deploy, test, clean up
 
