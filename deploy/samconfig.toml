@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "lambda-swagger-test"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-2obupc4qyrer"
+s3_prefix = "lambda-swagger-test"
+region = "eu-west-1"
+confirm_changeset = true
+capabilities = "CAPABILITY_IAM"
+
