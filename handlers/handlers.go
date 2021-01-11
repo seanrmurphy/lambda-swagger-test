@@ -84,7 +84,7 @@ func GetPathParamEmptyResponse(params open.GetPathParamEmptyResponseParams) midd
 }
 
 func GetPathParamSimpleResponse(params open.GetPathParamSimpleResponseParams) middleware.Responder {
-	pathParam := params.Param
+	pathParam := params.PathParam
 	str := fmt.Sprintf("Response from GetPathParamSimpleResponse function - input param = %v", pathParam)
 
 	r := models.SimpleMessageResponse{
@@ -96,7 +96,7 @@ func GetPathParamSimpleResponse(params open.GetPathParamSimpleResponseParams) mi
 }
 
 func GetPathParamComplexResponse(params open.GetPathParamComplexResponseParams) middleware.Responder {
-	pathParam := params.Param
+	pathParam := params.PathParam
 	str := fmt.Sprintf("Input param = %v", pathParam)
 
 	stringArray := []string{"param1", "param2", str}
@@ -125,7 +125,7 @@ func GetPathParamComplexResponse(params open.GetPathParamComplexResponseParams) 
 }
 
 func GetPathParamErrorResponse(params open.GetPathParamErrorResponseParams) middleware.Responder {
-	pathParam := params.Param
+	pathParam := params.PathParam
 	str := fmt.Sprintf("Calling this endpoint (GetPathParamErrorResponse) deliberately generates an error case - Input param = %v", pathParam)
 	randomInt := rand.Int63()
 
@@ -134,6 +134,67 @@ func GetPathParamErrorResponse(params open.GetPathParamErrorResponseParams) midd
 		ErrorString: &str,
 	}
 	resp := open.NewGetPathParamErrorResponseIMATeapot().WithPayload(&r)
+
+	return resp
+}
+
+func GetQueryParamEmptyResponse(params open.GetQueryParamEmptyResponseParams) middleware.Responder {
+	resp := open.NewGetQueryParamEmptyResponseOK()
+
+	return resp
+}
+
+func GetQueryParamSimpleResponse(params open.GetQueryParamSimpleResponseParams) middleware.Responder {
+	pathParam := params.QueryParam
+	str := fmt.Sprintf("Response from GetQueryParamSimpleResponse function - input param = %v", pathParam)
+
+	r := models.SimpleMessageResponse{
+		Message: &str,
+	}
+	resp := open.NewGetQueryParamSimpleResponseOK().WithPayload(&r)
+
+	return resp
+}
+
+func GetQueryParamComplexResponse(params open.GetQueryParamComplexResponseParams) middleware.Responder {
+	pathParam := params.QueryParam
+	str := fmt.Sprintf("Input param = %v", pathParam)
+
+	stringArray := []string{"param1", "param2", str}
+	descriptor1 := "A descriptive string (object1)"
+	intVal := rand.Int63()
+	o1 := models.SimpleObjectOne{
+		StringArray: stringArray,
+		Descriptor:  &descriptor1,
+		IntVal:      &intVal,
+	}
+
+	descriptor2 := "A descriptive string (object2)"
+	intArray := []int64{rand.Int63(), rand.Int63(), rand.Int63(), rand.Int63()}
+	o2 := models.SimpleObjectTwo{
+		Descriptor: &descriptor2,
+		IntArray:   intArray,
+	}
+	r := models.ComplexObjectResponse{
+		Object1:       &o1,
+		Object2:       &o2,
+		OptionalParam: rand.Int63(),
+	}
+	resp := open.NewGetQueryParamComplexResponseOK().WithPayload(&r)
+
+	return resp
+}
+
+func GetQueryParamErrorResponse(params open.GetQueryParamErrorResponseParams) middleware.Responder {
+	pathParam := params.QueryParam
+	str := fmt.Sprintf("Calling this endpoint (GetQueryParamErrorResponse) deliberately generates an error case - Input param = %v", pathParam)
+	randomInt := rand.Int63()
+
+	r := models.ErrorResponse{
+		ErrorNumber: &randomInt,
+		ErrorString: &str,
+	}
+	resp := open.NewGetQueryParamErrorResponseIMATeapot().WithPayload(&r)
 
 	return resp
 }

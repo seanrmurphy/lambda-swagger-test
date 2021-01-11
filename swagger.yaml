@@ -131,8 +131,7 @@ paths:
         500:
           description: General Failure
 
-
-  /path-param/empty-response/{param}:
+  /path-param/empty-response/{path-param}:
     get:
       tags:
       - open
@@ -154,12 +153,12 @@ paths:
           description: General Failure
       parameters:
       - in: path
-        name: param
+        name: path-param
         description: An arbitrary test parameter which is ignored here
         type: integer
         required: true
 
-  /path-param/simple-response/{param}:
+  /path-param/simple-response/{path-param}:
     get:
       tags:
       - open
@@ -183,12 +182,12 @@ paths:
           description: General Failure
       parameters:
       - in: path
-        name: param
+        name: path-param
         description: An arbitrary test parameter which is returned in the response
         type: integer
         required: true
 
-  /path-param/complex-response/{param}:
+  /path-param/complex-response/{path-param}:
     get:
       tags:
       - open
@@ -212,12 +211,12 @@ paths:
           description: General Failure
       parameters:
       - in: path
-        name: param
+        name: path-param
         description: An arbitrary test parameter which is returned in the response
         type: integer
         required: true
 
-  /path-param/error-response/{param}:
+  /path-param/error-response/{path-param}:
     get:
       tags:
       - open
@@ -241,7 +240,7 @@ paths:
           description: General Failure
       parameters:
       - in: path
-        name: param
+        name: path-param
         description: An arbitrary test parameter which is returned in the response
         type: integer
         required: true
@@ -295,6 +294,120 @@ paths:
         description: An arbitrary test parameter which is ignored here
         schema:
           $ref: '#/definitions/InputObject'
+        required: true
+
+  /query-param/empty-response:
+    get:
+      tags:
+      - open
+      summary: Endpoint which takes a parameter and returns a HTTP response code only
+      operationId: getQueryParamEmptyResponse
+      description:
+        Endpoint which takes a parameter and returns a HTTP response code only
+      produces:
+      - application/json
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      responses:
+        200:
+          description: Successful execution of API call
+        500:
+          description: General Failure
+      parameters:
+      - in: query
+        name: query-param
+        description: An arbitrary test parameter which is ignored here
+        type: integer
+        required: true
+
+  /query-param/simple-response:
+    get:
+      tags:
+      - open
+      summary: Endpoint which takes a parameter and returns a HTTP response containing a simple message
+      operationId: getQueryParamSimpleResponse
+      description:
+        Endpoint which takes a parameter and returns a HTTP response containing a simple message
+      produces:
+      - application/json
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      responses:
+        200:
+          description: Successful execution of API call returning message in simple JSON object
+          schema:
+            $ref: '#/definitions/SimpleMessageResponse'
+        500:
+          description: General Failure
+      parameters:
+      - in: query
+        name: query-param
+        description: An arbitrary test parameter which is returned in the response
+        type: integer
+        required: true
+
+  /query-param/complex-response:
+    get:
+      tags:
+      - open
+      summary: An endpoint which takes an input parameters and returns a HTTP response code and a complex JSON object in a body
+      operationId: getQueryParamComplexResponse
+      description:
+        An endpoint which takes an input parameter and returns a HTTP response code and a complex JSON object in a body
+      produces:
+      - application/json
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      responses:
+        200:
+          description: Successful execution of API call returning complex object
+          schema:
+            $ref: '#/definitions/ComplexObjectResponse'
+        500:
+          description: General Failure
+      parameters:
+      - in: query
+        name: query-param
+        description: An arbitrary test parameter which is returned in the response
+        type: integer
+        required: true
+
+  /query-param/error-response:
+    get:
+      tags:
+      - open
+      summary: An endpoint which takes an input parameter and returns a HTTP response code and an error response
+      operationId: getQueryParamErrorResponse
+      description:
+        An endpoint which takes an input parameter and returns a HTTP response code and an error response
+      produces:
+      - application/json
+      x-amazon-apigateway-integration:
+        httpMethod: post
+        type: aws_proxy
+        uri:
+          Fn::Sub: arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${LambdaSwaggerTestFunction.Arn}/invocations
+      responses:
+        418:
+          description: Error generated when executing API call
+          schema:
+            $ref: '#/definitions/ErrorResponse'
+        500:
+          description: General Failure
+      parameters:
+      - in: query
+        name: query-param
+        description: An arbitrary test parameter which is returned in the response
+        type: integer
         required: true
 
   /body-param/simple-response:

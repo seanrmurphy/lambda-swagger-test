@@ -59,6 +59,24 @@ echo
 echo "Sending GET request to /path-param/error-response - expect HTTP 418 with error message"
 curlwithcode $RESTAPI/path-param/empty-response/$PARAM
 
+PARAM='5678'
+
+echo
+echo "Sending GET request to /query-param/empty-response - expect HTTP 200 with no body"
+curlwithcode $RESTAPI/query-param/empty-response?query-param=$PARAM
+
+echo
+echo "Sending GET request to /query-param/simple-response - expect HTTP 200 with simple body"
+curlwithcode $RESTAPI/query-param/simple-response?query-param=$PARAM
+
+echo
+echo "Sending GET request to /query-param/complex-response - expect HTTP 200 with complex body"
+curlwithcode $RESTAPI/query-param/complex-response?query-param=$PARAM
+
+echo
+echo "Sending GET request to /query-param/error-response - expect HTTP 418 with error message"
+curlwithcode $RESTAPI/query-param/empty-response?query-param=$PARAM
+
 echo
 echo "Sending GET request to /body-param/empty-response - expect HTTP 501 with error message"
 curlwithcode $RESTAPI/body-param/empty-response
@@ -112,6 +130,46 @@ curlwithcode $RESTAPI/path-param/complex-response/$PARAM
 echo
 echo "Sending GET request to /path-param/error-response - expect invalid request response"
 curlwithcode $RESTAPI/path-param/empty-response/$PARAM
+
+echo
+echo "Error cases - sending no query parameter"
+
+echo
+echo "Sending GET request to /query-param/empty-response - expect invalid request response"
+curlwithcode $RESTAPI/query-param/empty-response
+
+echo
+echo "Sending GET request to /query-param/simple-response - expect invalid request response"
+curlwithcode $RESTAPI/query-param/simple-response
+
+echo
+echo "Sending GET request to /query-param/complex-response - expect invalid request response"
+curlwithcode $RESTAPI/query-param/complex-response
+
+echo
+echo "Sending GET request to /query-param/error-response - expect invalid request response"
+curlwithcode $RESTAPI/query-param/empty-response
+
+echo
+echo "Error cases - sending invalid query parameter"
+
+PARAM='EFGH'
+
+echo
+echo "Sending GET request to /query-param/empty-response - expect invalid request response"
+curlwithcode $RESTAPI/query-param/empty-response?query-param=$PARAM
+
+echo
+echo "Sending GET request to /query-param/simple-response - expect invalid request response"
+curlwithcode $RESTAPI/query-param/simple-response?query-param=$PARAM
+
+echo
+echo "Sending GET request to /query-param/complex-response - expect invalid request response"
+curlwithcode $RESTAPI/query-param/complex-response?query-param=$PARAM
+
+echo
+echo "Sending GET request to /query-param/error-response - expect invalid request response"
+curlwithcode $RESTAPI/query-param/empty-response?query-param=$PARAM
 
 echo
 echo "Error cases - sending invalid body parameter"
